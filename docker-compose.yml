@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  redis:
+    image: redis
+    container_name: cache
+    ports:
+      - "6379:6379"
+    expose:
+      - 6379
+  socketserver:
+    container_name: sockserve
+    links:
+      - redis
+    build:
+      context: ./socketserver
+    ports:
+      - "3004:3004"
+    environment:
+      - REDIS_URL=redis
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - socketserver
+    ports:
+      - "4000:4000"
