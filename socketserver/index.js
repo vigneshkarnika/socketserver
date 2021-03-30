@@ -18,7 +18,10 @@ app.use(express.static("public"));
 app.get("/publish", function (req, res) {
   try {
     console.log(req.query.app, req.query.topic, req.query.data);
-    io.sockets.emit(req.query.app + "-" + req.query.topic, req.query.data);
+    io.sockets.emit(
+      req.query.app + "/" + req.query.topic,
+      JSON.stringify(req.query.data)
+    );
     io.sockets.emit(
       "appdebug",
       `${req.query.app}/${req.query.topic}: ${req.query.data}`
@@ -36,7 +39,8 @@ app.get("/publish", function (req, res) {
 app.post("/publish", function (req, res) {
   try {
     console.log(req.body);
-    console.log(req.body.app, req.body.topic, req.body.data);
+    console.log(req.body.app, req.body.topic, JSON.stringify(req.body.data));
+    io.sockets.emit(req.body.app + "/" + req.body.topic, req.body.data);
     io.sockets.emit(
       "appdebug",
       `${req.body.app}/${req.body.topic}: ${JSON.stringify(req.body.data)}`
