@@ -40,7 +40,10 @@ app.post("/publish", function (req, res) {
   try {
     console.log(req.body);
     console.log(req.body.app, req.body.topic, JSON.stringify(req.body.data));
-    io.sockets.emit(req.body.app + "/" + req.body.topic, req.body.data);
+    io.sockets.emit(
+      req.body.app + "/" + req.body.topic,
+      JSON.stringify(req.body.data)
+    );
     io.sockets.emit(
       "appdebug",
       `${req.body.app}/${req.body.topic}: ${JSON.stringify(req.body.data)}`
