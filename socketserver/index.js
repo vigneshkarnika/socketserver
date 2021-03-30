@@ -18,7 +18,7 @@ app.use(express.static("public"));
 app.get("/publish", function (req, res) {
   try {
     console.log(req.query.app, req.query.topic, req.query.data);
-    io.sockets.emit(req.query.app + "/" + req.query.topic, req.query.data);
+    io.sockets.emit(req.query.app + "-" + req.query.topic, req.query.data);
     io.sockets.emit(
       "appdebug",
       `${req.query.app}/${req.query.topic}: ${req.query.data}`
